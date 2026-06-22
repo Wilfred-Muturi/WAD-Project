@@ -34,3 +34,14 @@ footer a{
 footer a:hover{
     color:#0d6efd;
 }
+
+.hero-image-frame {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.hero-image-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
