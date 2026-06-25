@@ -55,3 +55,8 @@ footer a:hover{
     display: block;
     margin: 0 auto 15px;
 }
+.lookbook-carousel .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
