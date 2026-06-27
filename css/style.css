@@ -80,3 +80,7 @@ footer a:hover{
     max-width: 500px;
     margin: 0 auto;
 }
+.table-responsive {
+    max-width: 500px;
+    margin: 0 auto;
+}
