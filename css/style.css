@@ -76,3 +76,7 @@ footer a:hover{
     transform: scale(1.15);
     display: block;
 }
+#contact-form {
+    max-width: 500px;
+    margin: 0 auto;
+}

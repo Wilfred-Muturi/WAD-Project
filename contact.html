@@ -61,6 +61,50 @@
     </div>
 </nav>
 
+<section class="page-header">
+    <div class="container">
+      <p class="section-label mb-2">Get in touch</p>
+      <h1 class="display-font h2 mb-2">Contact us</h1>
+      <p class="text-ink-soft mb-0">Order questions, repairs, wholesale inquiries, or just to say hello,
+       we read every message ourselves. Most common questions are already answered on our
+         <a href="faq.html">FAQ page</a>.</p>
+    </div>
+  </section>
+
+  <form id="contact-form" novalidate>
+            <div class="mb-3">
+              <label for="contact-name" class="form-label">Full name</label>
+              <input type="text" class="form-control" id="contact-name" name="name" placeholder="Joe M" required>
+              <div class="invalid-feedback">Please tell us your name.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="contact-email" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="contact-email" name="email" placeholder="you@email.com" required>
+              <div class="invalid-feedback">Enter a valid email address.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="contact-topic" class="form-label">What's this about?</label>
+              <select class="form-select" id="contact-topic" name="topic">
+                <option selected>Order question</option>
+                <option>Repair program</option>
+                <option>Returns &amp; exchanges</option>
+                <option>Wholesale &amp; press</option>
+                <option>Something else</option>
+              </select>
+            </div>
+
+            <div class="mb-4">
+              <label for="contact-message" class="form-label">Message</label>
+              <textarea class="form-control" id="contact-message" name="message" rows="5" placeholder="Tell us a bit about what you need..." required></textarea>
+              <div class="invalid-feedback">Message should be at least 10 characters.</div>
+            </div>
+
+            <button type="submit" class="btn btn-drift">Send message</button>
+          </form>
+        </div>
+
 
 <footer class="site-footer stitch-top">
   <div class="container">
