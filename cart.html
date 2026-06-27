@@ -61,6 +61,45 @@
     </div>
 </nav>
 
+<section class="page-header">
+    <div class="container">
+      <h1 class="display-font h2 mb-2">Your cart</h1>
+     </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <p id="cart-empty-state" class="text-center text-ink-soft py-5">
+            Your cart is empty. <a href="shop.html">Browse the shop</a> to add something.
+          </p>
+          <div id="cart-lines"></div>
+        </div>
+        <div class="col-lg-4">
+          <div id="cart-summary" class="feature-block d-none">
+            <h2 class="h6 mb-3">Order summary</h2>
+            <div class="d-flex justify-content-between small mb-2">
+              <span class="text-ink-soft">Subtotal</span>
+              <span id="cart-subtotal">$0.00</span>
+            </div>
+            <div class="d-flex justify-content-between small mb-2">
+              <span class="text-ink-soft">Shipping</span>
+              <span id="cart-shipping">$0.00</span>
+            </div>
+            <hr class="stitch-divider my-3">
+            <div class="d-flex justify-content-between fw-bold mb-3">
+              <span>Total</span>
+              <span id="cart-total">$0.00</span>
+            </div>
+            <button id="checkout-btn" type="button" class="btn btn-drift w-100">Checkout</button>
+            <p class="small text-ink-soft mt-3 mb-0">Payment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 
 <footer class="site-footer stitch-top">
   <div class="container">
