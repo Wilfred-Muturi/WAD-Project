@@ -105,3 +105,12 @@ function showToast(message) {
   toast.show();
   toastEl.addEventListener("hidden.bs.toast", () => toastEl.remove());
 }
+
+function initFeaturedGrid() {
+  const grid = document.getElementById("featured-grid");
+  if (!grid || typeof DRIFT_PRODUCTS === "undefined") return;
+  const featuredIds = ["p01", "p05", "p03", "p08"];
+  const items = featuredIds.map((id) => findProduct(id)).filter(Boolean);
+  grid.innerHTML = items.map(productCardHTML).join("");
+  attachAddToCartHandlers(grid);
+}
