@@ -80,7 +80,7 @@ function syncCartBadge() {
 }
 
 function findProduct(id) {
-  if (typeof DRIFT_PRODUCTS === "undefined") return null;
+  if (typeof REMAKE_WORKS === "undefined") return null;
   return REMAKE_WORKS.find((p) => p.id === id) || null;
 }
 
@@ -108,7 +108,7 @@ function showToast(message) {
 
 function initFeaturedGrid() {
   const grid = document.getElementById("featured-grid");
-  if (!grid || typeof DRIFT_PRODUCTS === "undefined") return;
+  if (!grid || typeof REMAKE_WORKS === "undefined") return;
   const featuredIds = ["p01", "p05", "p03", "p07s"];
   const items = featuredIds.map((id) => findProduct(id)).filter(Boolean);
   grid.innerHTML = items.map(productCardHTML).join("");
@@ -234,4 +234,130 @@ function attachAddToCartHandlers(scope) {
       );
     });
   });
+}
+
+function initCartPage() {
+  const cartContainer = document.getElementById("cart-lines");
+  if (!cartContainer || typeof REMAKE_WORKS === "undefined") return;
+
+  const SHIPPING_FLAT = 500;
+
+  function render() {
+    const cart = getCart();
+    const emptyState = document.getElementById("cart-empty-state");
+    const summary = document.getElementById("cart-summary");
+
+    if (cart.length === 0) {
+      cartContainer.innerHTML = "";
+      if (emptyState) emptyState.classList.remove("d-none");
+      if (summary) summary.classList.add("d-none");
+      return;
+    }
+
+    if (emptyState) emptyState.classList.add("d-none");
+    if (summary) summary.classList.remove("d-none");
+
+    let subtotal = 0;
+
+    cartContainer.innerHTML = cart
+      .map((line) => {
+        const product = findProduct(line.id);
+        if (!product) return "";
+
+        const lineTotal = product.price * line.qty;
+        subtotal += lineTotal;
+
+        return `
+          <div class="cart-line d-flex gap-3 align-items-start"
+               data-id="${line.id}"
+               data-size="${line.size}">
+
+            <img src="${product.image}" alt="${product.name}">
+
+            <div class="flex-grow-1">
+              <h3 class="h6 mb-1">${product.name}</h3>
+              <p class="small text-ink-soft mb-2">Size: ${line.size}</p>
+
+              <div class="d-flex align-items-center gap-2">
+                <label class="visually-hidden"
+                  for="qty-${line.id}-${line.size}">
+                  Quantity for ${product.name}
+                </label>
+
+                <input
+                  type="number"
+                  min="1"
+                  value="${line.qty}"
+                  class="form-control form-control-sm qty-input cart-qty"
+                  id="qty-${line.id}-${line.size}">
+
+                <button
+                  type="button"
+                  class="btn btn-drift-outline btn-sm cart-remove">
+                  Remove
+                </button>
+              </div>
+            </div>
+
+            <div class="text-end">
+              <span class="product-price">
+                KSh ${lineTotal.toFixed(2)}
+              </span>
+            </div>
+
+          </div>`;
+      })
+      .join("");
+
+    const shipping = subtotal > 0 ? SHIPPING_FLAT : 0;
+
+    document.getElementById("cart-subtotal").textContent =
+      `KSh ${subtotal.toFixed(2)}`;
+
+    document.getElementById("cart-shipping").textContent =
+      `KSh ${shipping.toFixed(2)}`;
+
+    document.getElementById("cart-total").textContent =
+      `KSh ${(subtotal + shipping).toFixed(2)}`;
+
+    attachCartLineHandlers();
+  }
+
+  function attachCartLineHandlers() {
+    cartContainer.querySelectorAll(".cart-qty").forEach((input) => {
+      input.addEventListener("change", () => {
+        const line = input.closest(".cart-line");
+        const qty = parseInt(input.value, 10) || 1;
+
+        updateCartQty(line.dataset.id, line.dataset.size, qty);
+        render();
+      });
+    });
+
+    cartContainer.querySelectorAll(".cart-remove").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const line = btn.closest(".cart-line");
+
+        removeFromCart(line.dataset.id, line.dataset.size);
+        render();
+      });
+    });
+  }
+
+  const checkoutBtn = document.getElementById("checkout-btn");
+
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener("click", () => {
+      if (getCart().length === 0) return;
+
+      saveCart([]);
+      render();
+
+      showToast(
+        "Thank you for shopping with Remake Works! Your order has been received."
+      );
+    });
+  }
+
+  render();
 }
