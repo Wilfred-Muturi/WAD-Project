@@ -156,3 +156,25 @@ footer a:hover{
     margin-top: auto;
     padding-top: 10px;
 }
+.page-header {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 8px;
+}
+.cart-line {
+    padding: 16px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.cart-line img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.qty-input {
+    width: 70px !important;
+}
+
