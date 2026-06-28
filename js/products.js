@@ -12,7 +12,7 @@ const REMAKE_WORKS = [
   },
   {
     id: "p02",
-    name: "Essential Cotton T-Shirt",
+    name: "Denim coat with essential Cotton T-Shirt",
     category: "men",
     price: 1800,
     oldPrice: 2200,
@@ -35,7 +35,7 @@ const REMAKE_WORKS = [
   },
   {
     id: "p05",
-    name: "Floral Summer Dress",
+    name: "Blue denim coat",
     category: "women",
     price: 4200,
     oldPrice: 5000,
@@ -46,7 +46,7 @@ const REMAKE_WORKS = [
   },
   {
     id: "p06",
-    name: "Kids Graphic T-Shirt",
+    name: "Two tone denim jacket",
     category: "kids",
     price: 1200,
     oldPrice: null,
