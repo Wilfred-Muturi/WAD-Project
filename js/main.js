@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initFeaturedGrid();
   initShopPage();
   initCartPage();
+  initContactForm();
   setFooterYear();
 });
 
