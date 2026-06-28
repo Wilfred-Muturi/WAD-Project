@@ -362,6 +362,72 @@ function initCartPage() {
   render();
 }
 
+function initContactForm() {
+  const form = document.getElementById("contact-form");
+  if (!form) return;
+
+  const successBox = document.getElementById("contact-success");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const name = form.querySelector("#contact-name");
+    const email = form.querySelector("#contact-email");
+    const message = form.querySelector("#contact-message");
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    let valid = true;
+
+    if (!name.value.trim()) {
+      markInvalid(name, "Please tell us your name.");
+      valid = false;
+    } else {
+      markValid(name);
+    }
+
+    if (!emailPattern.test(email.value.trim())) {
+      markInvalid(email, "Enter a valid email address.");
+      valid = false;
+    } else {
+      markValid(email);
+    }
+
+    if (message.value.trim().length < 10) {
+      markInvalid(message, "Message should be at least 10 characters.");
+      valid = false;
+    } else {
+      markValid(message);
+    }
+
+    form.classList.add("was-validated");
+
+    if (valid) {
+      successBox.classList.remove("d-none");
+      form.reset();
+      form.classList.remove("was-validated");
+      [name, email, message].forEach((field) => field.classList.remove("is-valid"));
+      successBox.setAttribute("tabindex", "-1");
+      successBox.focus();
+    } else {
+      successBox.classList.add("d-none");
+    }
+  });
+}
+
+function markInvalid(field, text) {
+  field.classList.add("is-invalid");
+  field.classList.remove("is-valid");
+  const feedback = field.parentElement.querySelector(".invalid-feedback");
+  if (feedback) feedback.textContent = text;
+}
+
+function markValid(field) {
+  field.classList.remove("is-invalid");
+  field.classList.add("is-valid");
+}
+
+
 function setFooterYear() {
   document.querySelectorAll(".current-year").forEach((el) => {
     el.textContent = new Date().getFullYear();
