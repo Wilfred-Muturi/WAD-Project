@@ -361,3 +361,9 @@ function initCartPage() {
 
   render();
 }
+
+function setFooterYear() {
+  document.querySelectorAll(".current-year").forEach((el) => {
+    el.textContent = new Date().getFullYear();
+  });
+}
