@@ -109,8 +109,129 @@ function showToast(message) {
 function initFeaturedGrid() {
   const grid = document.getElementById("featured-grid");
   if (!grid || typeof DRIFT_PRODUCTS === "undefined") return;
-  const featuredIds = ["p01", "p05", "p03", "p08"];
+  const featuredIds = ["p01", "p05", "p03", "p07s"];
   const items = featuredIds.map((id) => findProduct(id)).filter(Boolean);
   grid.innerHTML = items.map(productCardHTML).join("");
   attachAddToCartHandlers(grid);
+}
+
+function initShopPage() {
+  const grid = document.getElementById("product-grid");
+  if (!grid || typeof REMAKE_WORKS === "undefined") return;
+
+  const filterButtons = document.querySelectorAll(".category-pill");
+  const searchInput = document.getElementById("product-search");
+  const emptyState = document.getElementById("shop-empty-state");
+  let activeCategory = "all";
+
+  function render() {
+    const query = (searchInput?.value || "").trim().toLowerCase();
+
+    const items = REMAKE_WORKS.filter((p) => {
+      const matchesCategory =
+        activeCategory === "all" || p.category === activeCategory;
+
+      const matchesQuery =
+        !query ||
+        p.name.toLowerCase().includes(query) ||
+        p.short.toLowerCase().includes(query);
+
+      return matchesCategory && matchesQuery;
+    });
+
+    grid.innerHTML = items.map(productCardHTML).join("");
+
+    if (emptyState) {
+      emptyState.classList.toggle("d-none", items.length > 0);
+    }
+
+    attachAddToCartHandlers(grid);
+  }
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeCategory = btn.dataset.category;
+      render();
+    });
+  });
+
+  if (searchInput) {
+    searchInput.addEventListener("input", render);
+  }
+
+  render();
+}
+
+function productCardHTML(p) {
+  const priceHTML = p.sale
+    ? `<span class="product-price old">KSh ${p.oldPrice}</span>
+       <span class="product-price">KSh ${p.price}</span>`
+    : `<span class="product-price">KSh ${p.price}</span>`;
+
+  const sizeOptions = p.sizes
+    .map((size) => `<option value="${size}">${size}</option>`)
+    .join("");
+
+  return `
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="product-card">
+        <div class="product-img-wrap">
+          ${p.sale ? '<span class="product-tag sale">Sale</span>' : ""}
+          <img src="${p.image}" alt="${p.name}" loading="lazy">
+        </div>
+
+        <div class="card-body p-3">
+          <p class="eyebrow mb-1">${categoryLabel(p.category)}</p>
+          <h3 class="h6 mb-1">${p.name}</h3>
+          <p class="small text-ink-soft mb-2">${p.short}</p>
+
+          <div class="mb-2">
+            ${priceHTML}
+          </div>
+
+          <div class="d-flex gap-2">
+            <select class="form-select form-select-sm size-select">
+              ${sizeOptions}
+            </select>
+
+            <button
+              class="btn btn-drift btn-sm add-to-cart-btn"
+              data-id="${p.id}"
+              type="button">
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function categoryLabel(category) {
+  const map = {
+    men: "Men",
+    women: "Women",
+    kids: "Kids"
+  };
+
+  return map[category] || category;
+}
+
+function attachAddToCartHandlers(scope) {
+  scope.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const card = btn.closest(".product-card");
+      const size =
+        card.querySelector(".size-select")?.value || "One Size";
+
+      addToCart(btn.dataset.id, size, 1);
+
+      const product = findProduct(btn.dataset.id);
+
+      showToast(
+        `Added "${product ? product.name : "Item"}" (${size}) to your cart.`
+      );
+    });
+  });
 }
